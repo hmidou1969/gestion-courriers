@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Ajouter Courrier Entrant - Gestion Courriers{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1><i class="bi bi-plus-circle"></i> Ajouter un Courrier Entrant</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('ajouter_entrant') }}" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="numero_courrier" class="form-label"><strong>Numéro de Courrier *</strong></label>
+                        <input type="text" class="form-control" id="numero_courrier" name="numero_courrier" required>
+                        <small class="text-muted">Ex: E-001/2024</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="date_entree" class="form-label"><strong>Date d'Entrée *</strong></label>
+                        <input type="date" class="form-control" id="date_entree" name="date_entree" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="expediteur" class="form-label"><strong>Expéditeur *</strong></label>
+                        <input type="text" class="form-control" id="expediteur" name="expediteur" required>
+                        <small class="text-muted">Nom de la personne ou organisation</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="designation" class="form-label"><strong>Désignation *</strong></label>
+                        <textarea class="form-control" id="designation" name="designation" rows="3" required></textarea>
+                        <small class="text-muted">Description du contenu du courrier</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="observations" class="form-label">Observations</label>
+                        <textarea class="form-control" id="observations" name="observations" rows="2"></textarea>
+                        <small class="text-muted">Commentaires additionnels (optionnel)</small>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('courriers_entrants') }}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Annuler
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle"></i> Ajouter
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Validation Bootstrap
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            var forms = document.getElementsByClassName('needs-validation');
+            for (var i = 0; i < forms.length; i++) {
+                forms[i].addEventListener('submit', function(event) {
+                    if (this.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    this.classList.add('was-validated');
+                }, false);
+            }
+        }, false);
+    })();
+</script>
+{% endblock %}

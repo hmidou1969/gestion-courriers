@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Erreur - Gestion Courriers{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card border-danger">
+            <div class="card-body text-center">
+                <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545;"></i>
+                <h1 class="card-title mt-3">Erreur {{ code }}</h1>
+                <p class="card-text">{{ message }}</p>
+                <a href="{{ url_for('index') }}" class="btn btn-primary">
+                    <i class="bi bi-house"></i> Retour à l'accueil
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

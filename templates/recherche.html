@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}Recherche - Gestion Courriers{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h1><i class="bi bi-search"></i> Recherche de Courriers</h1>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" action="{{ url_for('recherche') }}" class="row g-3">
+            <div class="col-md-8">
+                <input type="text" class="form-control" name="q" placeholder="Rechercher par numéro, expéditeur, destinataire ou désignation..." value="{{ query }}">
+            </div>
+            <div class="col-md-2">
+                <select class="form-select" name="type">
+                    <option value="tous" {% if type_recherche == 'tous' %}selected{% endif %}>Tous</option>
+                    <option value="entrants" {% if type_recherche == 'entrants' %}selected{% endif %}>Entrants</option>
+                    <option value="sortants" {% if type_recherche == 'sortants' %}selected{% endif %}>Sortants</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-search"></i> Rechercher
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if query %}
+    <!-- Résultats Courriers Entrants -->
+    {% if resultats_entrants %}
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-arrow-down-square"></i> Courriers Entrants ({{ resultats_entrants|length }})
+                </h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Numéro</th>
+                            <th>Date Entrée</th>
+                            <th>Expéditeur</th>
+                            <th>Désignation</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for courrier in resultats_entrants %}
+                            <tr>
+                                <td><strong>{{ courrier.numero_courrier }}</strong></td>
+                                <td>{{ courrier.date_entree.strftime('%d/%m/%Y') }}</td>
+                                <td>{{ courrier.expediteur }}</td>
+                                <td>{{ courrier.designation[:50] }}{% if courrier.designation|length > 50 %}...{% endif %}</td>
+                                <td>
+                                    <a href="{{ url_for('modifier_entrant', id=courrier.id) }}" class="btn btn-sm btn-warning">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Résultats Courriers Sortants -->
+    {% if resultats_sortants %}
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-arrow-up-square"></i> Courriers Sortants ({{ resultats_sortants|length }})
+                </h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Numéro</th>
+                            <th>Date Courrier</th>
+                            <th>Destinataire</th>
+                            <th>Désignation</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for courrier in resultats_sortants %}
+                            <tr>
+                                <td><strong>{{ courrier.numero_courrier }}</strong></td>
+                                <td>{{ courrier.date_courrier.strftime('%d/%m/%Y') }}</td>
+                                <td>{{ courrier.destinataire }}</td>
+                                <td>{{ courrier.designation[:50] }}{% if courrier.designation|length > 50 %}...{% endif %}</td>
+                                <td>
+                                    <a href="{{ url_for('modifier_sortant', id=courrier.id) }}" class="btn btn-sm btn-warning">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Aucun résultat -->
+    {% if not resultats_entrants and not resultats_sortants %}
+        <div class="alert alert-warning text-center">
+            <i class="bi bi-exclamation-triangle"></i> Aucun courrier ne correspond à votre recherche.
+        </div>
+    {% endif %}
+{% else %}
+    <div class="alert alert-info text-center">
+        <i class="bi bi-info-circle"></i> Utilisez le formulaire ci-dessus pour rechercher des courriers.
+    </div>
+{% endif %}
+{% endblock %}

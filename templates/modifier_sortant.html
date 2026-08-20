@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Modifier Courrier Sortant - Gestion Courriers{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1><i class="bi bi-pencil"></i> Modifier le Courrier Sortant</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('modifier_sortant', id=courrier.id) }}" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="numero_courrier" class="form-label"><strong>Numéro de Courrier *</strong></label>
+                        <input type="text" class="form-control" id="numero_courrier" name="numero_courrier" value="{{ courrier.numero_courrier }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="date_courrier" class="form-label"><strong>Date du Courrier *</strong></label>
+                        <input type="date" class="form-control" id="date_courrier" name="date_courrier" value="{{ courrier.date_courrier.strftime('%Y-%m-%d') }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="destinataire" class="form-label"><strong>Destinataire *</strong></label>
+                        <input type="text" class="form-control" id="destinataire" name="destinataire" value="{{ courrier.destinataire }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="designation" class="form-label"><strong>Désignation *</strong></label>
+                        <textarea class="form-control" id="designation" name="designation" rows="3" required>{{ courrier.designation }}</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="observations" class="form-label">Observations</label>
+                        <textarea class="form-control" id="observations" name="observations" rows="2">{{ courrier.observations or '' }}</textarea>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('courriers_sortants') }}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Annuler
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-check-circle"></i> Modifier
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            var forms = document.getElementsByClassName('needs-validation');
+            for (var i = 0; i < forms.length; i++) {
+                forms[i].addEventListener('submit', function(event) {
+                    if (this.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    this.classList.add('was-validated');
+                }, false);
+            }
+        }, false);
+    })();
+</script>
+{% endblock %}
