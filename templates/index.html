@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}Accueil - Gestion Courriers{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h1 class="mb-4">
+            <i class="bi bi-speedometer2"></i> Tableau de Bord
+        </h1>
+    </div>
+</div>
+
+<!-- Statistiques -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title">Courriers Entrants</h6>
+                        <h2 class="card-text">{{ total_entrants }}</h2>
+                    </div>
+                    <i class="bi bi-arrow-down-square" style="font-size: 3rem;"></i>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('courriers_entrants') }}" class="text-white text-decoration-none">
+                    Voir tous <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-success text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title">Courriers Sortants</h6>
+                        <h2 class="card-text">{{ total_sortants }}</h2>
+                    </div>
+                    <i class="bi bi-arrow-up-square" style="font-size: 3rem;"></i>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('courriers_sortants') }}" class="text-white text-decoration-none">
+                    Voir tous <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-info text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title">Total Courriers</h6>
+                        <h2 class="card-text">{{ total_courriers }}</h2>
+                    </div>
+                    <i class="bi bi-envelope" style="font-size: 3rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Derniers courriers -->
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-arrow-down-square"></i> Derniers Courriers Entrants</h5>
+            </div>
+            <div class="card-body">
+                {% if derniers_entrants %}
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Numéro</th>
+                                    <th>Date</th>
+                                    <th>Expéditeur</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for courrier in derniers_entrants %}
+                                    <tr>
+                                        <td><strong>{{ courrier.numero_courrier }}</strong></td>
+                                        <td>{{ courrier.date_entree.strftime('%d/%m/%Y') }}</td>
+                                        <td>{{ courrier.expediteur }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted text-center">Aucun courrier entrant</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="bi bi-arrow-up-square"></i> Derniers Courriers Sortants</h5>
+            </div>
+            <div class="card-body">
+                {% if derniers_sortants %}
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Numéro</th>
+                                    <th>Date</th>
+                                    <th>Destinataire</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for courrier in derniers_sortants %}
+                                    <tr>
+                                        <td><strong>{{ courrier.numero_courrier }}</strong></td>
+                                        <td>{{ courrier.date_courrier.strftime('%d/%m/%Y') }}</td>
+                                        <td>{{ courrier.destinataire }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted text-center">Aucun courrier sortant</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
